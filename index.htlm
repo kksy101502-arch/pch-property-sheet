@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PCH Property Sheet Generator</title>
+<style>
+:root{--blue:#11194f;--gold:#e7d348;--light:#f4f4f4}
+*{box-sizing:border-box} body{margin:0;font-family:'Trebuchet MS','Segoe UI',Arial,sans-serif;background:#e9e9e9;color:#172033}
+.app{display:grid;grid-template-columns:360px 1fr;gap:18px;max-width:1400px;margin:0 auto;padding:18px}
+.panel{background:#fff;border-radius:12px;padding:18px;box-shadow:0 3px 14px #0002;position:sticky;top:12px;height:max-content}
+h2{margin:0 0 12px;color:var(--blue);font-size:23px;font-weight:800;letter-spacing:.2px}
+label{display:block;font-weight:800;font-size:14px;margin:11px 0 5px}
+input,textarea{width:100%;padding:11px;border:1px solid #c8ccd5;border-radius:7px;font-size:15px;font-family:inherit}
+textarea{resize:vertical;min-height:50px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+button{border:0;border-radius:8px;padding:12px 14px;font-weight:800;cursor:pointer;font-size:14px}
+.primary{background:var(--blue);color:#fff;width:100%;margin-top:14px}.secondary{background:#eee;margin-top:8px;width:100%}
+.hint{font-size:12px;color:#666;margin-top:8px;line-height:1.4}
+.sheet-wrap{display:flex;justify-content:center}
+.sheet{width:210mm;min-height:297mm;background:white;padding:7mm 9mm;box-shadow:0 3px 16px #0003}
+.header{height:28mm;background:var(--blue);display:flex;align-items:center;padding:0 8mm;color:#fff}
+.logo{width:20mm;height:20mm;background:var(--gold);clip-path:polygon(50% 0,100% 45%,65% 100%,0 65%);margin-right:6mm;position:relative}
+.logo:after{content:"PC&H";position:absolute;bottom:2px;left:3px;color:var(--blue);font-weight:900;font-size:11px;transform:rotate(-30deg)}
+.brand{font-size:21px;letter-spacing:2.2px;font-weight:900}
+.topline{display:flex;justify-content:space-between;gap:8px;padding:5mm 0 2mm;font-weight:700;font-size:12.5px}
+.price{font-size:15px}
+.photos{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:46mm 31mm;gap:3mm}
+.photo{background:#ddd;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;color:#777;font-size:11px;text-align:center}
+.photo.main{grid-row:1/3}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo .remove{position:absolute;right:3px;top:3px;background:#0009;color:#fff;border-radius:4px;padding:2px 5px;font-size:10px;display:none}
+.info-title,.section-title{margin-top:4mm;background:var(--blue);color:#fff;font-size:13px;font-weight:900;padding:2.5mm 3mm;letter-spacing:.3px}
+.info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2mm 7mm;padding:3.5mm 2mm;font-size:12px;line-height:1.35}
+.item{display:grid;grid-template-columns:18px 1fr;gap:4px;align-items:start}
+.icon{font-weight:bold;color:#333}
+.value{font-weight:700}.muted{font-weight:400}
+.contact{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm;padding:5mm 2mm 0;font-size:9px}
+.contact b{font-size:9px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.panel{position:relative}.sheet{transform-origin:top left;transform:scale(.72);margin-bottom:-80mm}}
+@media print{body{background:#fff}.panel{display:none}.app{display:block;padding:0}.sheet{box-shadow:none;margin:0;width:210mm;min-height:297mm}.sheet-wrap{display:block}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="panel">
+<h2>สร้างใบ Property Sheet</h2>
+<div class="row"><div><label>ประเภท</label><input id="type" value="Villa for Sale"></div><div><label>ราคา</label><input id="price" value="฿55,000,000"></div></div>
+<label>ชื่อโครงการ / ชื่อทรัพย์</label><input id="title" value="Pratumnak D-Sign Villas - 6 Bedroom">
+<div class="row"><div><label>ID</label><input id="id" value="H005730"></div><div><label>ทำเล</label><input id="location" value="Pratumnak"></div></div>
+<div class="row"><div><label>Living Size</label><input id="living" value="600 Sqm"></div><div><label>Land Size</label><input id="land" value="750 Sqm"></div></div>
+<div class="row"><div><label>ชั้น</label><input id="floors" value="2 storey"></div><div><label>ห้องนอน</label><input id="beds" value="6 Bedrooms"></div></div>
+<div class="row"><div><label>ห้องน้ำ</label><input id="baths" value="6 Bathrooms"></div><div><label>ข้อมูลเสริม</label><input id="extra" value="Fully Furnished"></div></div>
+<label>รายละเอียดสั้น</label><textarea id="desc">Modern luxury villa with private pool.</textarea>
+<label>เบอร์ Eng</label><input id="eng" value="+66 8727 37315">
+<label>เบอร์ Thai</label><input id="thai" value="+66 8116 14058">
+<label>Email</label><input id="email" value="info@pattayacondosandhomes.com">
+<label>WhatsApp</label><input id="wa" value="+66 8116 14058">
+<div class="hint">รูป: คลิกช่องรูปแล้วกด Ctrl+V เพื่อวางรูปจาก Clipboard หรือเลือกไฟล์จากปุ่มด้านล่าง</div>
+<div class="hint"><b>ลิงก์ถาวร:</b> ไฟล์นี้เป็นเว็บแอปแบบไฟล์เดียว จึงนำไปฝากไว้บน Google Drive / GitHub Pages / เว็บบริษัทได้เพื่อสร้างลิงก์สาธารณะถาวร</div>
+<input id="file" type="file" accept="image/*" multiple style="margin-top:10px">
+<button class="primary" onclick="window.print()">พิมพ์ / Save เป็น PDF</button>
+<button class="secondary" onclick="clearAll()">ล้างข้อมูล</button>
+</div>
+
+<div class="sheet-wrap"><div class="sheet" id="sheet">
+<div class="header"><div class="logo"></div><div class="brand">PATTAYA CONDOS &amp; HOMES</div></div>
+<div class="topline"><span id="o_title">Pratumnak D-Sign Villas - 6 Bedroom</span><span class="price" id="o_price">For Sale: ฿55,000,000</span></div>
+<div style="font-size:13px;font-weight:800;margin-bottom:2mm"><span id="o_type">Villa for Sale</span><br>ID: <span id="o_id">H005730</span></div>
+<div class="photos">
+<div class="photo main" data-slot="0">คลิกที่นี่แล้วกด Ctrl+V<br>หรือเลือกไฟล์ด้านซ้าย</div>
+<div class="photo" data-slot="1">PHOTO 2</div>
+<div class="photo" data-slot="2">PHOTO 3</div>
+<div class="photo" data-slot="3">PHOTO 4</div>
+<div class="photo" data-slot="4">PHOTO 5</div>
+</div>
+<div class="info-title">Information</div>
+<div class="info">
+<div class="item"><span class="icon">▣</span><span>Ref: <span class="value" id="o_ref">H005730</span><br><span class="muted" id="o_type2">For Sale</span></span></div>
+<div class="item"><span class="icon">●</span><span id="o_loc">Pratumnak</span></div>
+<div class="item"><span class="icon">⌂</span><span>House</span></div>
+<div class="item"><span class="icon">▥</span><span id="o_floor">2 storey</span></div>
+<div class="item"><span class="icon">▣</span><span>Living Size: <span class="value" id="o_living">600 Sqm</span></span></div>
+<div class="item"><span class="icon">▧</span><span>Land Size: <span class="value" id="o_land">750 Sqm</span></span></div>
+<div class="item"><span class="icon">฿</span><span>Price: Sale <span class="value" id="o_price2">฿55,000,000</span></span></div>
+<div class="item"><span class="icon">🛏</span><span id="o_beds">6 Bedrooms</span></div>
+<div class="item"><span class="icon">🚿</span><span id="o_baths">6 Bathrooms</span></div>
+<div class="item"><span class="icon">▤</span><span>Company</span></div>
+<div class="item"><span class="icon">▤</span><span id="o_extra">Fully Furnished</span></div>
+<div class="item"><span class="icon">★</span><span id="o_desc">Modern luxury villa with private pool.</span></div>
+</div>
+<div class="section-title">Property Features</div>
+<div style="min-height:13mm"></div>
+<div class="section-title">Contact Info</div>
+<div class="contact"><div><b>Eng</b> <span id="o_eng">(+66) 8727 37315</span></div><div>✉ <span id="o_email">info@pattayacondosandhomes.com</span></div><div>◉ WhatsApp <span id="o_wa">(+66) 8116 14058</span></div><div><b>Thai</b> <span id="o_thai">(+66) 8116 14058</span></div></div>
+</div></div>
+</div>
+
+<script>
+const ids=['type','price','title','id','location','living','land','floors','beds','baths','extra','desc','eng','thai','email','wa'];
+const out={type:'o_type',price:'o_price',title:'o_title',id:'o_id',location:'o_loc',living:'o_living',land:'o_land',floors:'o_floor',beds:'o_beds',baths:'o_baths',extra:'o_extra',desc:'o_desc',eng:'o_eng',thai:'o_thai',email:'o_email',wa:'o_wa'};
+ids.forEach(k=>document.getElementById(k).addEventListener('input',()=>update(k)));
+function update(k){
+ const v=document.getElementById(k).value;
+ if(out[k]) document.getElementById(out[k]).textContent=v;
+ if(k==='price'){document.getElementById('o_price').textContent='For Sale: '+v;document.getElementById('o_price2').textContent=v}
+ if(k==='id') document.getElementById('o_ref').textContent=v;
+ if(k==='type'){document.getElementById('o_type2').textContent=v}
+}
+let activeSlot=0;
+document.querySelectorAll('.photo').forEach(p=>p.addEventListener('click',()=>activeSlot=+p.dataset.slot));
+document.addEventListener('paste',e=>{
+ const items=[...(e.clipboardData?.items||[])]; const item=items.find(x=>x.type.startsWith('image/'));
+ if(item){e.preventDefault();const f=item.getAsFile();loadImage(f,activeSlot)}
+});
+document.getElementById('file').addEventListener('change',e=>{
+ [...e.target.files].slice(0,5).forEach((f,i)=>loadImage(f,i));
+});
+function loadImage(file,slot){
+ const reader=new FileReader(); reader.onload=ev=>{
+  const box=document.querySelector('.photo[data-slot="'+slot+'"]');
+  box.innerHTML='<img src="'+ev.target.result+'">';
+ }; reader.readAsDataURL(file);
+}
+function clearAll(){location.reload()}
+</script>
+</body></html>
